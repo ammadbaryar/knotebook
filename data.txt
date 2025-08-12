@@ -1,0 +1,11 @@
+Navigation: react-router-dom
+
+Storage: dexie
+
+Graph visualization: @xyflow/react
+
+Markdown parsing: remark + remark-parse
+
+Search: lunr
+
+Editing: codemirror + react-codemirror2
