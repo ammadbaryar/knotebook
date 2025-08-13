@@ -1,21 +1,28 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "./Navbar.css";
 
 const Navbar = () => {
   return (
-    <nav className="flex items-center justify-between px-6 py-3 bg-green-700 text-white shadow-md">
-      <h1 className="text-xl font-bold">
+    <nav className="nav-container">
+      <h1 className="nav-heading">
         <Link to="/">🌱 Digital Garden</Link>
       </h1>
-      <div className="flex gap-4">
-        <Link to="/" className="hover:underline">
+      <div className="nav-links">
+        <Link to="/" className="nav-link">
           Home
         </Link>
-        <Link to="/editor" className="hover:underline">
+        <Link to="/editor" className="nav-link">
           Editor
         </Link>
-        <Link to="/graph" className="hover:underline">
-          Graph
+        <Link to="/diagram" className="nav-link">
+          Diagram
+        </Link>
+        <Link to="/notes" className="nav-link">
+          Notes
+        </Link>
+        <Link to="/search" className="nav-link">
+          Search
         </Link>
       </div>
     </nav>

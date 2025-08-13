@@ -1,18 +1,21 @@
-// hooks/useDexieLiveQuery.js
-import { liveQuery } from 'dexie';
+// src/hooks/useDexieLiveQuery.js
 import { useState, useEffect } from 'react';
-import { db } from '../db';
+import { liveQuery } from 'dexie';
 
-export function useDexieLiveQuery(queryFn, deps = []) {
+export default function useDexieLiveQuery(queryFn, deps = []) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const subscription = liveQuery(queryFn).subscribe({
-      next: result => setData(result),
-      error: err => console.error('Dexie live query error', err)
+    const sub = liveQuery(queryFn).subscribe({
+      next: (result) => setData(result),
+      error: (err) => {
+        console.error('Dexie liveQuery error', err);
+        setData([]);
+      },
     });
 
-    return () => subscription.unsubscribe();
+    return () => sub.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 
   return data;

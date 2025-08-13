@@ -1,13 +1,12 @@
-// src/db.js
 import Dexie from 'dexie';
 
-const db = new Dexie('DevNotesDB');
+const db = new Dexie('digital_garden_db');
 
-// Define tables
+// Define database schema
 db.version(1).stores({
-  notes: '++id, title, content, createdAt', // for markdown notes
-  codeSnippets: '++id, title, language, code, createdAt', // for code editor
-  diagrams: '++id, title, data, createdAt' // for XYFlow diagrams
+  notes: '++id, title, content, createdAt, updatedAt',
+  diagrams: '++id, title, data, createdAt, updatedAt',
+  snippets: '++id, title, code, language, createdAt, updatedAt',
 });
 
 export default db;

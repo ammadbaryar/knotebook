@@ -9,3 +9,14 @@ Markdown parsing: remark + remark-parse
 Search: lunr
 
 Editing: codemirror + react-codemirror2
+
+Primary: #7dd3fc (Sky Blue)
+Secondary: #fef9c3 (Soft Cream)
+Accent: #fca5a5 (Soft Coral)
+Background: #f8fafc (Ultra Light Gray)
+Surface: #ffffff (White)
+Text: #334155 (Slate Gray)
+Muted: #e2e8f0 (Muted Blue-Gray)
+Border: #e5e7eb (Light Border Gray)
+Success: #86efac (Pastel Green)
+Info: #93c5fd (Pastel Blue)

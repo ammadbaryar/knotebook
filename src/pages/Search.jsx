@@ -1,55 +1,31 @@
-import React, { useState } from "react";
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
-import SearchBar from "../components/SearchBar";
-import NoteCard from "../components/NoteCard";
-import { db } from "../db";
-import "./global.css";
+// src/pages/Search.jsx
+import React, { useState } from 'react';
+import MainLayout from '../layouts/MainLayout';
+import useDexieLiveQuery from '../hooks/useDexieLiveQuery';
+import useSearch from '../hooks/useSearch';
+import db from '../database/db.js';
+import NoteCard from '../components/NoteCard';
 
 export default function Search() {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
-
-  const handleSearch = async (term) => {
-    setQuery(term);
-    if (term.trim() === "") {
-      setResults([]);
-      return;
-    }
-    const matches = await db.notes
-      .filter(
-        (note) =>
-          note.title.toLowerCase().includes(term.toLowerCase()) ||
-          note.content.toLowerCase().includes(term.toLowerCase())
-      )
-      .toArray();
-    setResults(matches);
-  };
+  const notes = useDexieLiveQuery(() => db.notes.toArray(), []);
+  const [q, setQ] = useState('');
+  const results = useSearch(notes || [], q);
 
   return (
-    <div className="page-container">
-      <Navbar />
-      <div className="main-content">
-        <Sidebar />
-        <div className="content-area">
-          <h1>Search Notes</h1>
-          <SearchBar onSearch={handleSearch} />
-          <div className="notes-grid">
-            {results.length ? (
-              results.map((note) => (
-                <NoteCard
-                  key={note.id}
-                  title={note.title}
-                  content={note.content}
-                  date={note.date}
-                />
-              ))
-            ) : (
-              query && <p>No results found for "{query}"</p>
-            )}
-          </div>
+    <MainLayout>
+      <section>
+        <h1>Search</h1>
+        <div style={{ marginBottom: 12 }}>
+          <input placeholder="Search notes..." value={q} onChange={(e) => setQ(e.target.value)} style={{ padding: 8, width: '60%' }} />
         </div>
-      </div>
-    </div>
+
+        <div className="notes-grid">
+          {q && results.length === 0 && <p>No results</p>}
+          {results.map((r) => (
+            <NoteCard key={r.id} note={r} />
+          ))}
+        </div>
+      </section>
+    </MainLayout>
   );
 }

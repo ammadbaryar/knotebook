@@ -1,22 +1,31 @@
-// layouts/MainLayout.jsx
+// src/layouts/MainLayout.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
-import './MainLayout.css';
+import Navbar from '../components/Navbar';
+import Sidebar from '../components/Sidebar';
+import '../styles/global.css'; 
+import Footer from '../components/Footer';
 
 export default function MainLayout({ children }) {
   return (
-    <div className="main-layout">
-      <header className="header">
-        <nav>
-          <Link to="/">Home</Link>
-          <Link to="/editor">Editor</Link>
-          <Link to="/diagram">Diagram</Link>
-          <Link to="/notes">Notes</Link>
-          <Link to="/search">Search</Link>
-        </nav>
+     <div className="page-container" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <header className="navbar">
+        <Navbar />
       </header>
 
-      <main className="main-content">{children}</main>
+      <div className="main-layout" style={{ display: 'flex', flex: 1 }}>
+        <aside className="sidebar">
+          <Sidebar />
+        </aside>
+
+        <main className="main-content" style={{ flex: 1, minHeight: '100vh' }}>
+          {children}
+        </main>
+      </div>
+
+
+      <footer className='footer'>
+        <Footer/>
+      </footer>
     </div>
   );
 }

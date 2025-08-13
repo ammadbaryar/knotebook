@@ -1,53 +1,58 @@
 // src/pages/Diagram.jsx
-import React, { useState, useEffect } from 'react';
-import db from '../db';
+import React, { useState, useCallback } from 'react';
+import MainLayout from '../layouts/MainLayout';
+import useDexieLiveQuery from '../hooks/useDexieLiveQuery';
+import db from '../database/db.js';
 import NodeCanvas from '../components/NodeCanvas';
-import '../global.css';
 
 export default function Diagram() {
-  const [title, setTitle] = useState('');
-  const [data, setData] = useState(null);
-  const [diagrams, setDiagrams] = useState([]);
+  const diagrams = useDexieLiveQuery(() => db.diagrams.orderBy('createdAt').reverse().toArray(), []);
+  const [selected, setSelected] = useState(null);
+  const [currentFlow, setCurrentFlow] = useState({ nodes: [], edges: [] });
 
-  // Load diagrams
-  useEffect(() => {
-    const fetchDiagrams = async () => {
-      const allDiagrams = await db.diagrams.toArray();
-      setDiagrams(allDiagrams.reverse());
-    };
-    fetchDiagrams();
+  const handleSave = async () => {
+    if (!currentFlow) return alert('Nothing to save');
+    const now = new Date().toISOString();
+    if (selected && selected.id) {
+      await db.diagrams.update(selected.id, { data: currentFlow, updatedAt: now });
+      alert('Updated diagram');
+    } else {
+      await db.diagrams.add({ title: `Diagram ${new Date().toLocaleString()}`, data: currentFlow, createdAt: now, updatedAt: now });
+      alert('Saved diagram');
+    }
+  };
+
+  // NodeCanvas should call setFlowData when nodes/edges change; implement that prop in your NodeCanvas component
+  const setFlowData = useCallback((data) => {
+    setCurrentFlow(data);
   }, []);
 
-  // Save diagram
-  const saveDiagram = async () => {
-    if (!title.trim() || !data) return alert('Please provide a title and diagram');
-    await db.diagrams.add({ title, data, createdAt: new Date().toISOString() });
-    setTitle('');
-    setData(null);
-    const updatedDiagrams = await db.diagrams.toArray();
-    setDiagrams(updatedDiagrams.reverse());
+  const loadDiagram = (d) => {
+    setSelected(d);
+    setCurrentFlow(d.data || { nodes: [], edges: [] });
   };
 
   return (
-    <div className="page-container">
-      <h1>Flow Diagrams</h1>
-      <input
-        type="text"
-        placeholder="Diagram Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <NodeCanvas setData={setData} />
-      <button onClick={saveDiagram}>Save Diagram</button>
-
-      <div className="diagrams-list">
-        {diagrams.map((d) => (
-          <div key={d.id} className="diagram-item">
-            <h2>{d.title}</h2>
-            <pre>{JSON.stringify(d.data, null, 2)}</pre>
+    <MainLayout>
+      <section>
+        <h1>Diagram / Graph</h1>
+        <div style={{ display: 'flex', gap: 16 }}>
+          <div style={{ flex: 1, height: 500, border: '1px solid #ddd' }}>
+            <NodeCanvas nodes={currentFlow.nodes} edges={currentFlow.edges} setFlowData={setFlowData} />
           </div>
-        ))}
-      </div>
-    </div>
+
+          <aside style={{ width: 320 }}>
+            <button onClick={handleSave}>Save Diagram</button>
+            <h3 style={{ marginTop: 12 }}>Saved diagrams</h3>
+            {diagrams?.length ? diagrams.map(d => (
+              <div key={d.id} style={{ padding: 8, cursor: 'pointer' }} onClick={() => loadDiagram(d)}>
+                <strong>{d.title}</strong>
+                <div style={{ fontSize: 12, color: '#666' }}>{new Date(d.createdAt).toLocaleString()}</div>
+              </div>
+            )) : <div>No diagrams yet</div>}
+          </aside>
+        </div>
+      </section>
+    </MainLayout>
   );
 }

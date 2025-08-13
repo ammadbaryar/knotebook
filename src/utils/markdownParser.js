@@ -1,18 +1,12 @@
-// utils/markdownParser.js
+// src/utils/markdownParser.js
 import { remark } from 'remark';
 import remarkHtml from 'remark-html';
 import remarkGfm from 'remark-gfm';
 
 /**
- * Parses Markdown text to HTML
- * @param {string} markdown
- * @returns {Promise<string>}
+ * parseMarkdown(markdownString) -> Promise<string HTML>
  */
-export async function parseMarkdown(markdown) {
-  const file = await remark()
-    .use(remarkGfm) // GitHub-flavored markdown
-    .use(remarkHtml)
-    .process(markdown);
-
-  return String(file);
+export async function parseMarkdown(markdown = '') {
+  const processed = await remark().use(remarkGfm).use(remarkHtml).process(markdown || '');
+  return String(processed);
 }

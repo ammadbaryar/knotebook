@@ -1,13 +1,10 @@
-import Home from '../src/pages/Home'
+// src/App.jsx
+import React from "react";
+import AppRouter from "./router/AppRouter";
+import "./app.css";
 
-function App() {
+const App = () => {
+  return <AppRouter />;
+};
 
-let name = "KnoteBook";
-  return (
-    <>
-      <Home/>
-    </>
-  )
-}
-
-export default App
+export default App;

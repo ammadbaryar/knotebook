@@ -1,16 +1,22 @@
-// hooks/useMarkdown.js
+// src/hooks/useMarkdown.js
 import { useState, useEffect } from 'react';
 import { parseMarkdown } from '../utils/markdownParser';
 
-export function useMarkdown(markdown) {
+export default function useMarkdown(markdown) {
   const [html, setHtml] = useState('');
 
   useEffect(() => {
-    async function convert() {
-      const parsed = await parseMarkdown(markdown || '');
-      setHtml(parsed);
-    }
-    convert();
+    let cancelled = false;
+    (async () => {
+      try {
+        const parsed = await parseMarkdown(markdown || '');
+        if (!cancelled) setHtml(parsed);
+      } catch (e) {
+        console.error('parseMarkdown error', e);
+        if (!cancelled) setHtml('');
+      }
+    })();
+    return () => (cancelled = true);
   }, [markdown]);
 
   return html;
