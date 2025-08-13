@@ -15,9 +15,6 @@ const Navbar = () => {
         <Link to="/editor" className="nav-link">
           Editor
         </Link>
-        <Link to="/diagram" className="nav-link">
-          Diagram
-        </Link>
         <Link to="/notes" className="nav-link">
           Notes
         </Link>

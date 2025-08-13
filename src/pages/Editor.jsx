@@ -4,6 +4,7 @@ import MainLayout from '../layouts/MainLayout';
 import useDexieLiveQuery from '../hooks/useDexieLiveQuery';
 import db from '../database/db.js';
 import CodeEditor from '../components/CodeEditor';
+import './Editor.css';
 
 export default function Editor() {
   const snippets = useDexieLiveQuery(() => db.snippets.orderBy('createdAt').reverse().toArray(), []);
@@ -28,7 +29,6 @@ export default function Editor() {
       await db.snippets.add({ title, language, code, createdAt: now, updatedAt: now });
       alert('Saved snippet');
     }
-    // reset
     setSelected(null);
     setTitle('');
     setCode('');
@@ -44,38 +44,50 @@ export default function Editor() {
 
   return (
     <MainLayout>
-      <section>
-        <h1>Snippets</h1>
-
-        <div style={{ marginBottom: 12 }}>
-          <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" style={{ padding: 8, width: '40%', marginRight: 8 }} />
-          <select value={language} onChange={(e) => setLanguage(e.target.value)} style={{ padding: 8 }}>
+      <div className="editor-container">
+        <h1 className="editor-title">Snippets Editor</h1>
+        <div className="editor-toolbar">
+          <input
+            className="editor-input"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Title"
+          />
+          <select
+            className="editor-select"
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+          >
             <option value="javascript">JavaScript</option>
             <option value="python">Python</option>
             <option value="html">HTML</option>
           </select>
-          <button onClick={handleSave} style={{ marginLeft: 10 }}>Save</button>
-          <button onClick={handleDelete} style={{ marginLeft: 8 }}>Delete</button>
+          <button className="editor-btn" onClick={handleSave}>Save</button>
+          <button className="editor-btn" onClick={handleDelete}>Delete</button>
         </div>
-
-        <div style={{ display: 'flex', gap: 16 }}>
-          <div style={{ flex: 1 }}>
-            <div style={{ border: '1px solid #ddd', borderRadius: 6, overflow: 'hidden' }}>
+        <div className="editor-main">
+          <div className="editor-code-wrapper">
+            <div className="editor-area editor-code-scroll">
               <CodeEditor value={code} onChange={setCode} />
             </div>
           </div>
-
-          <aside style={{ width: 280 }}>
-            <h3>Saved snippets</h3>
-            {snippets?.length ? snippets.map((s) => (
-              <div key={s.id} style={{ padding: 8, borderBottom: '1px solid #eee', cursor: 'pointer' }} onClick={() => selectSnippet(s)}>
-                <strong>{s.title}</strong>
-                <div style={{ fontSize: 12, color: '#666' }}>{s.language} • {new Date(s.createdAt).toLocaleString()}</div>
-              </div>
-            )) : <div>No saved snippets</div>}
+          <aside className="editor-aside">
+            <h3 className="editor-aside-title">Saved snippets</h3>
+            <div className="editor-snippet-list">
+              {snippets?.length ? snippets.map((s) => (
+                <div
+                  key={s.id}
+                  className="editor-snippet-item"
+                  onClick={() => selectSnippet(s)}
+                >
+                  <strong>{s.title}</strong>
+                  <div className="editor-snippet-meta">{s.language} • {new Date(s.createdAt).toLocaleString()}</div>
+                </div>
+              )) : <div>No saved snippets</div>}
+            </div>
           </aside>
         </div>
-      </section>
+      </div>
     </MainLayout>
   );
 }

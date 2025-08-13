@@ -35,27 +35,6 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Diagrams Section */}
-      <div className="sidebar-section">
-        <h3>Diagrams</h3>
-        <button className="sidebar-btn" onClick={() => navigate('/diagram')}>+ New Diagram</button>
-        <div className="sidebar-list">
-          {diagrams?.length ? (
-            diagrams.map((d) => (
-              <div
-                key={d.id}
-                className="sidebar-item"
-                onClick={() => navigate(`/diagram/${d.id}`)}
-              >
-                {d.title || 'Untitled Diagram'}
-              </div>
-            ))
-          ) : (
-            <div className="sidebar-empty">No diagrams</div>
-          )}
-        </div>
-      </div>
-
       {/* Snippets Section */}
       <div className="sidebar-section">
         <h3>Snippets</h3>

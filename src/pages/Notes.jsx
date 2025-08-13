@@ -5,6 +5,7 @@ import useDexieLiveQuery from '../hooks/useDexieLiveQuery';
 import useMarkdown from '../hooks/useMarkdown';
 import db from '../database/db.js';
 import { useNavigate, useParams } from 'react-router-dom';
+import './Notes.css';
 
 export default function Notes() {
   const notes = useDexieLiveQuery(() => db.notes.orderBy('createdAt').reverse().toArray(), []);
@@ -34,36 +35,61 @@ export default function Notes() {
       await db.notes.add({ ...current, createdAt: now, updatedAt: now });
       alert('Note saved');
     }
-    navigate('/');
+    setCurrent({ title: '', content: '# New note\n\nStart writing...' });
   };
 
   const remove = async () => {
     if (!current.id) return alert('Not saved yet');
     await db.notes.delete(current.id);
-    navigate('/');
+    setCurrent({ title: '', content: '# New note\n\nStart writing...' });
   };
 
   return (
     <MainLayout>
-      <section>
-        <h1>{current.id ? 'Edit Note' : 'New Note'}</h1>
-        <div style={{ display: 'flex', gap: 16 }}>
-          <div style={{ flex: 1 }}>
-            <input value={current.title} onChange={(e) => setCurrent((s) => ({ ...s, title: e.target.value }))} placeholder="Title" style={{ padding: 8, width: '100%', marginBottom: 8 }} />
-            <textarea value={current.content} onChange={(e) => setCurrent((s) => ({ ...s, content: e.target.value }))} style={{ width: '100%', height: 320, padding: 8 }} />
-            <div style={{ marginTop: 8 }}>
-              <button onClick={save}>Save</button>
-              <button onClick={() => navigate('/')} style={{ marginLeft: 8 }}>Cancel</button>
-              <button onClick={remove} style={{ marginLeft: 8 }}>Delete</button>
-            </div>
+      <div className="notes-container">
+       <div className="notes-title-row">
+          <h1 className="notes-title">{current.id ? 'Edit Note' : 'New Note'}</h1>
+        </div>
+        <div className="notes-main">
+          <div className="notes-editor-wrapper">
+            <input
+              className="notes-input"
+              value={current.title}
+              onChange={(e) => setCurrent((s) => ({ ...s, title: e.target.value }))}
+              placeholder="Title"
+            />
+            <textarea
+              className="notes-textarea"
+              value={current.content}
+              onChange={(e) => setCurrent((s) => ({ ...s, content: e.target.value }))}
+            />
           </div>
-
-          <aside style={{ width: 420 }}>
-            <h3>Preview</h3>
-            <div className="markdown-viewer" dangerouslySetInnerHTML={{ __html: html }} />
+          <aside className="notes-aside">
+            <div className="notes-toolbar">
+              <button className="notes-btn" onClick={save}>Save</button>
+              <button className="notes-btn" onClick={remove}>Delete</button>
+            </div>
+            <div className="notes-aside-header">
+              <h3 className="notes-aside-title">Saved Notes</h3>
+            </div>
+            <div className="notes-list">
+              {notes?.length ? notes.map((note) => (
+                <div
+                  key={note.id}
+                  className={`notes-list-item${current.id === note.id ? ' selected' : ''}`}
+                  onClick={async () => {
+                    const n = await db.notes.get(note.id);
+                    if (n) setCurrent(n);
+                  }}
+                >
+                  <strong>{note.title || 'Untitled'}</strong>
+                  <div className="notes-list-meta">{new Date(note.createdAt).toLocaleString()}</div>
+                </div>
+              )) : <div>No notes found</div>}
+            </div>
           </aside>
         </div>
-      </section>
+      </div>
     </MainLayout>
   );
 }
