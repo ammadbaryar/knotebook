@@ -102,7 +102,7 @@
 .editor-code-scroll {
   padding: 0;
   min-height: 300px;
-  max-height: 400px;
+  max-height: 380px;
   height: 400px; /* Ensures fixed height */
   overflow: auto;
   box-sizing: border-box;

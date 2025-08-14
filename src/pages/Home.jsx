@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import NoteCard from '../components/NoteCard';
 import useDexieLiveQuery from '../hooks/useDexieLiveQuery';
@@ -6,44 +7,59 @@ import db from '../database/db.js';
 import './Home.css';
 
 export default function Home() {
+  const navigate = useNavigate();
   const notes = useDexieLiveQuery(() => db.notes.orderBy('createdAt').reverse().toArray(), []);
   const snippets = useDexieLiveQuery(() => db.snippets?.orderBy('createdAt').reverse().toArray(), []);
+  const [search, setSearch] = useState('');
+
+  // Filter notes and snippets by search
+  const filteredNotes = search
+    ? notes.filter(n => (n.title || '').toLowerCase().includes(search.toLowerCase()) || (n.content || '').toLowerCase().includes(search.toLowerCase()))
+    : [];
+  const filteredSnippets = search
+    ? snippets.filter(s => (s.title || '').toLowerCase().includes(search.toLowerCase()) || (s.code || '').toLowerCase().includes(search.toLowerCase()))
+    : [];
+  const results = search ? [...filteredNotes, ...filteredSnippets] : [];
 
   return (
     <MainLayout>
       <div className="home-container">
         <h1 className="home-title">Welcome to Knotebook</h1>
         <p className="home-description">
-          Your personal space for notes and code snippets. Start by creating a new note or snippet!
+          Your personal space for notes and code snippets!
         </p>
-        <div className="home-actions">
-          <button className="home-action-btn">New Note</button>
-          <button className="home-action-btn">New Snippet</button>
+        <div style={{ marginBottom: 24, textAlign: 'center' }}>
+          <input
+            type="text"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="Search notes and snippets..."
+            style={{ padding: 8, width: '60%', borderRadius: 6, border: '1px solid #e0e0e0' }}
+          />
         </div>
 
-        <section>
-          <h2 className="home-title">Recent Notes</h2>
-          <div className="notes-grid">
-            {notes?.length ? (
-              notes.map((note) => <NoteCard key={note.id} note={note} />)
-            ) : (
-              <p>No notes yet. Click "New Note" above to create one.</p>
-            )}
-          </div>
-        </section>
+        {search ? (
+          <section>
+            <h2 className="home-title">Search Results</h2>
+            <div className="notes-grid">
+              {results.length === 0 && <p>No results found.</p>}
+              {results.map((item) => (
+                <NoteCard
+                  key={item.id}
+                  note={item}
+                  onClick={() => {
+                    if (item.content !== undefined) {
+                      navigate(`/notes/${item.id}`);
+                    } else if (item.code !== undefined) {
+                      navigate(`/editor/${item.id}`);
+                    }
+                  }}
+                />
+              ))}
+            </div>
+          </section>
 
-        <section>
-          <h2 className="home-title">Recent Snippets</h2>
-          <div className="notes-grid">
-            {snippets?.length ? (
-              snippets.map((snippet) => (
-                <NoteCard key={snippet.id} note={snippet} /> // You may want a separate SnippetCard component
-              ))
-            ) : (
-              <p>No snippets yet. Click "New Snippet" above to create one.</p>
-            )}
-          </div>
-        </section>
+        ) : null}
       </div>
     </MainLayout>
   );

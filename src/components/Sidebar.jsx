@@ -16,8 +16,11 @@ export default function Sidebar() {
     <div className="sidebar" >
       {/* Notes Section */}
       <div className="sidebar-section">
-        <h3>Notes</h3>
-        <button className="sidebar-btn" onClick={() => navigate('/notes')}>+ New Note</button>
+        <div className='sidebar-header'>
+          <h3>Notes</h3>
+        <button className="sidebar-btn" onClick={() => navigate('/notes')}>+ New Note</button>  
+
+        </div>
         <div className="sidebar-list">
           {notes?.length ? (
             notes.map((n) => (
@@ -37,8 +40,12 @@ export default function Sidebar() {
 
       {/* Snippets Section */}
       <div className="sidebar-section">
-        <h3>Snippets</h3>
+        <div className='sidebar-header'>
+          <h3>Snippets</h3>
         <button className="sidebar-btn" onClick={() => navigate('/editor')}>+ New Snippet</button>
+
+        </div>
+        
         <div className="sidebar-list">
           {snippets?.length ? (
             snippets.map((s) => (
