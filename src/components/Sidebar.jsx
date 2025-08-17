@@ -7,14 +7,13 @@ import './Sidebar.css';
 export default function Sidebar() {
   const navigate = useNavigate();
 
-  // Live queries for notes, diagrams, snippets
   const notes = useDexieLiveQuery(() => db.notes.orderBy('createdAt').reverse().toArray(), []);
   const diagrams = useDexieLiveQuery(() => db.diagrams.orderBy('createdAt').reverse().toArray(), []);
   const snippets = useDexieLiveQuery(() => db.snippets.orderBy('createdAt').reverse().toArray(), []);
 
   return (
     <div className="sidebar" >
-      {/* Notes Section */}
+    
       <div className="sidebar-section">
         <div className='sidebar-header'>
           <h3>Notes</h3>

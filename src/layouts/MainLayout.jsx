@@ -1,8 +1,6 @@
-// src/layouts/MainLayout.jsx
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
-import '../styles/global.css'; 
 import Footer from '../components/Footer';
 
 export default function MainLayout({ children }) {

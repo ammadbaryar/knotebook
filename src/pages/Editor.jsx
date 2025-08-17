@@ -1,4 +1,3 @@
-// src/pages/Editor.jsx
 import React, { useState, useEffect } from 'react';
 import MainLayout from '../layouts/MainLayout';
 import useDexieLiveQuery from '../hooks/useDexieLiveQuery';
@@ -15,8 +14,9 @@ export default function Editor() {
   const [language, setLanguage] = useState('javascript');
   const [code, setCode] = useState('// your code');
   const [notFound, setNotFound] = useState(false);
+  const [error, setError] = useState('');
 
-  // Load snippet by id from route params
+  
   useEffect(() => {
     if (id) {
       db.snippets.get(Number(id)).then((s) => {
@@ -51,28 +51,25 @@ export default function Editor() {
   };
 
   const handleSave = async () => {
+    if (!title.trim()) {
+      setError('Please enter a title before saving.');
+      return;
+    }
+    setError('');
     const now = new Date().toISOString();
     if (selected && selected.id) {
       await db.snippets.update(selected.id, { title, language, code, updatedAt: now });
-      const updated = await db.snippets.get(selected.id);
-      setSelected(updated);
-      setTitle(updated.title);
-      setLanguage(updated.language || 'javascript');
-      setCode(updated.code || '');
-      alert('Updated snippet');
     } else {
-      const newId = await db.snippets.add({ title, language, code, createdAt: now, updatedAt: now });
-      const newSnippet = await db.snippets.get(newId);
-      setSelected(newSnippet);
-      setTitle(newSnippet.title);
-      setLanguage(newSnippet.language || 'javascript');
-      setCode(newSnippet.code || '');
-      alert('Saved snippet');
+      await db.snippets.add({ title, language, code, createdAt: now, updatedAt: now });
     }
+    setSelected(null);
+    setTitle('');
+    setLanguage('javascript');
+    setCode('// your code');
   };
 
   const handleDelete = async () => {
-    if (!selected) return alert('Select a snippet first');
+    if (!selected) return setError('No snippet selected to delete');
     await db.snippets.delete(selected.id);
     setSelected(null);
     setTitle('');
@@ -84,18 +81,15 @@ export default function Editor() {
   return (
     <MainLayout>
       <div className="editor-container">
-        {/* <div style={{background: '#ffe', padding: '1rem', marginBottom: '1rem', border: '1px solid #ccc'}}>
-          <div><strong>Debug Info:</strong></div>
-          <div>Route param id: {id ? id : 'None'}</div>
-          <div>Selected snippet: {selected ? JSON.stringify(selected) : 'None'}</div>
-          <div>All snippet IDs: {snippets && snippets.length ? snippets.map(s => s.id).join(', ') : 'None'}</div>
-        </div> */}
         <h1 className="editor-title">Snippets Editor</h1>
         <div className="editor-toolbar">
           <input
             className="editor-input"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              setTitle(e.target.value);
+              if (error) setError('');
+            }}
             placeholder="Title"
           />
           <select
@@ -110,11 +104,8 @@ export default function Editor() {
           <button className="editor-btn" onClick={handleSave}>Save</button>
           <button className="editor-btn" onClick={handleDelete}>Delete</button>
         </div>
-        {/* <div style={{marginBottom: '1rem'}}>
-          <strong>Current ID:</strong> {id ? id : 'None'}
-        </div> */}
-        {id && (!selected || notFound) && (
-          <div className="editor-notfound" style={{color: 'red', fontWeight: 'bold', marginBottom: '1rem'}}>Snippet not found for ID: {id}</div>
+        {error && (
+          <div style={{ color: 'red', fontWeight: 'bold' }}>{error}</div>
         )}
         <div className="editor-main">
           <div className="editor-code-wrapper">

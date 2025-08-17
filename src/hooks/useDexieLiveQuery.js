@@ -1,4 +1,3 @@
-// src/hooks/useDexieLiveQuery.js
 import { useState, useEffect } from 'react';
 import { liveQuery } from 'dexie';
 
@@ -15,7 +14,7 @@ export default function useDexieLiveQuery(queryFn, deps = []) {
     });
 
     return () => sub.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, deps);
 
   return data;

@@ -9,10 +9,11 @@ import './Notes.css';
 
 export default function Notes() {
   const notes = useDexieLiveQuery(() => db.notes.orderBy('createdAt').reverse().toArray(), []);
-  const { id } = useParams(); // optional route /notes/:id or /notes/new
+  const { id } = useParams(); 
   const navigate = useNavigate();
 
   const [current, setCurrent] = useState({ title: '', content: '' });
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (id && id !== 'new') {
@@ -27,19 +28,22 @@ export default function Notes() {
   const html = useMarkdown(current.content || '');
 
   const save = async () => {
+    if (!current.title.trim()) {
+      setError('Please enter a title before saving.');
+      return;
+    }
+    setError('');
     const now = new Date().toISOString();
     if (current.id) {
       await db.notes.update(current.id, { ...current, updatedAt: now });
-      alert('Note updated');
     } else {
       await db.notes.add({ ...current, createdAt: now, updatedAt: now });
-      alert('Note saved');
     }
     setCurrent({ title: '', content: '# New note\n\nStart writing...' });
   };
 
   const remove = async () => {
-    if (!current.id) return alert('Not saved yet');
+    if (!current.id) return setError('No Note selected to delete');
     await db.notes.delete(current.id);
     setCurrent({ title: '', content: '# New note\n\nStart writing...' });
   };
@@ -55,9 +59,15 @@ export default function Notes() {
             <input
               className="notes-input"
               value={current.title}
-              onChange={(e) => setCurrent((s) => ({ ...s, title: e.target.value }))}
+              onChange={(e) => {
+                setCurrent((s) => ({ ...s, title: e.target.value }));
+                if (error) setError('');
+              }}
               placeholder="Title"
             />
+            {error && (
+              <div style={{ color: 'red', fontWeight: 'bold', marginBottom: '1rem' }}>{error}</div>
+            )}
             <textarea
               className="notes-textarea"
               value={current.content}

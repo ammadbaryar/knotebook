@@ -2,7 +2,6 @@ import Dexie from 'dexie';
 
 const db = new Dexie('digital_garden_db');
 
-// Define database schema
 db.version(1).stores({
   notes: '++id, title, content, createdAt, updatedAt',
   diagrams: '++id, title, data, createdAt, updatedAt',

@@ -1,0 +1,38 @@
+:root { 
+  --color-primary: #ffffff;
+  --color-secondary: #f8f9fa;
+  --color-accent: #3366cc;
+  --color-background: #f8f9fa;
+  --color-surface: #ffffff;
+  --color-text: #202122;
+  --color-muted: #72777d;
+  --color-border: #a2a9b1;
+  --color-success: #14866d;
+  --color-info: #3366cc;
+
+}
+
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  background: #f7fafc;
+  color: #222;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}

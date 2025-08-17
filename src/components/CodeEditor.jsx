@@ -7,7 +7,6 @@ const CodeEditor = ({ value, onChange }) => {
     <div className="h-full">
       <CodeMirror
         value={value}
-        // height="300px"
         extensions={[javascript({ jsx: true })]}
         onChange={(value) => onChange(value)}
       />

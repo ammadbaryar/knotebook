@@ -1,4 +1,4 @@
-:root { 
+/* :root { 
   --color-primary: #ffffff;
   --color-secondary: #f8f9fa;
   --color-accent: #3366cc;
@@ -10,7 +10,7 @@
   --color-success: #14866d;
   --color-info: #3366cc;
 
-}
+} */
 
 nav {
   display: flex;
@@ -42,27 +42,4 @@ nav h1 {
   padding: 0.5rem 0.75rem;
   border-radius: 4px;
   transition: background 0.2s;
-}
-
-/* .nav-link:hover {
-  background: var(--color-accent);
-  color: var(--color-surface);
-} */
-
-@media (max-width: 600px) {
-  nav {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 1rem;
-  }
-  .nav-links {
-    flex-direction: column;
-    width: 100%;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-  }
-  .nav-link {
-    width: 100%;
-    padding: 0.75rem 1rem;
-  }
 }

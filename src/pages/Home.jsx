@@ -12,7 +12,6 @@ export default function Home() {
   const snippets = useDexieLiveQuery(() => db.snippets?.orderBy('createdAt').reverse().toArray(), []);
   const [search, setSearch] = useState('');
 
-  // Filter notes and snippets by search
   const filteredNotes = search
     ? notes.filter(n => (n.title || '').toLowerCase().includes(search.toLowerCase()) || (n.content || '').toLowerCase().includes(search.toLowerCase()))
     : [];

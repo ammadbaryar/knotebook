@@ -1,4 +1,3 @@
-// src/hooks/useSearch.js
 import { useState, useEffect, useMemo } from 'react';
 import { createSearchIndex } from '../utils/searchIndex';
 

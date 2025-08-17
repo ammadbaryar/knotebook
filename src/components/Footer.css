@@ -1,7 +1,4 @@
 .footer {
-  /* position: fixed; */
-  /* left: 0; */
-  /* bottom: 0; */
   width: 100%;
   background: var(--color-primary);
   color: var(--color-text);
@@ -11,16 +8,6 @@
   font-size: 1.1rem;
   /* z-index: 100; */
     margin-top: auto;
+    font-weight: 500;
 
 }
-
-/* 
-style={{
-      width: '100%',
-      background: 'var(--color-secondary, #f8f9fa)',
-      color: 'var(--color-text)',
-      borderTop: '1px solid var(--color-border, #a2a9b1)',
-      textAlign: 'center',
-      padding: '1.2rem 0',
-      fontSize: '1rem',
-      marginTop: 'auto' */
