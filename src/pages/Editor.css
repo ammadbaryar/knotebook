@@ -1,4 +1,5 @@
 
+
 .editor-container {
   max-width: 900px;
   max-height: 90vh;
@@ -10,6 +11,15 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  overflow-y: auto;
+}
+
+@media (max-width: 1024px) {
+  .editor-container {
+    max-height: none;
+    height: 100vh;
+    overflow-y: auto;
+  }
 }
 
 .editor-title {
@@ -20,10 +30,29 @@
   text-align: left;
 }
 
+
 .editor-toolbar {
   display: flex;
   gap: 1rem;
   margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 767px) {
+  .editor-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  .editor-input {
+    order: -1;
+    margin-bottom: 0.5rem;
+    width: 100% !important;
+  }
+  .editor-select,
+  .editor-btn {
+    width: 100%;
+  }
 }
 
 .editor-btn {
@@ -82,8 +111,31 @@
   gap: 24px;
 }
 
+@media (max-width: 1024px) {
+  .editor-main {
+    flex-direction: column;
+    gap: 0;
+  }
+  .editor-code-wrapper,
+  .editor-aside {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .editor-aside {
+    order: 2;
+    margin-top: 1.5rem;
+  }
+  .editor-code-wrapper {
+    order: 1;
+  }
+}
+
+
 .editor-code-wrapper {
   flex: 1;
+  max-width: 700px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .editor-code-scroll {

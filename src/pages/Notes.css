@@ -30,17 +30,27 @@
 
 }
 
+
 .notes-container {
-	max-width: 900px;
-    max-height: 90vh;
-	margin: 2rem auto;
-	padding: 2rem 1rem;
-	background: var(--color-surface, #fff);
-	border-radius: 12px;
-	box-shadow: 0 2px 16px rgba(0,0,0,0.08);
-	display: flex;
-	flex-direction: column;
-	gap: 1.5rem;
+		max-width: 900px;
+		max-height: 90vh;
+		margin: 2rem auto;
+		padding: 2rem 1rem;
+		background: var(--color-surface, #fff);
+		border-radius: 12px;
+		box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+		overflow-y: auto;
+}
+
+@media (max-width: 1024px) {
+	.notes-container {
+		max-height: none;
+		height: 100vh;
+		overflow-y: auto;
+	}
 }
 
 .notes-title {
@@ -51,9 +61,29 @@
 	text-align: left;
 }
 
+
 .notes-main {
 	display: flex;
 	gap: 24px;
+}
+
+@media (max-width: 1024px) {
+	.notes-main {
+		flex-direction: column;
+		gap: 0;
+	}
+	.notes-editor-wrapper,
+	.notes-aside {
+		width: 100% !important;
+		max-width: 100% !important;
+	}
+	.notes-aside {
+		order: 2;
+		margin-top: 1.5rem;
+	}
+	.notes-editor-wrapper {
+		order: 1;
+	}
 }
 
 .notes-editor-wrapper {
@@ -76,7 +106,7 @@
 
 .notes-textarea {
 	width: 100%;
-	height: 370px;
+	height: 360px;
 	padding: 1rem;
 	font-size: 1.1rem;
 	color: var(--color-text, #202122);

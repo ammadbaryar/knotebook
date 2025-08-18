@@ -1,4 +1,5 @@
 
+
 .sidebar {
   height: 100vh;
   width: 270px; /* Adjust as needed */
@@ -9,9 +10,13 @@
   flex-direction: column;
   border-right: 1px solid var(--color-border);
   overflow-y: scroll;
-    
   overflow-x: hidden;
-  
+}
+
+@media (max-width: 767px) {
+  .sidebar {
+    display: none !important;
+  }
 }
 
 .sidebar-section {
