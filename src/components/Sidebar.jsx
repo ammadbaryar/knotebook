@@ -37,7 +37,6 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Snippets Section */}
       <div className="sidebar-section">
         <div className='sidebar-header'>
           <h3>Snippets</h3>

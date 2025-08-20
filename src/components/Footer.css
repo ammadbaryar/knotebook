@@ -6,8 +6,6 @@
   text-align: center;
   padding: 1.2rem 0;
   font-size: 1.1rem;
-  /* z-index: 100; */
-    margin-top: auto;
-    font-weight: 500;
-
+  margin-top: auto;
+  font-weight: 500;
 }

@@ -1,7 +1,7 @@
 import React from "react";
 
 const NoteCard = ({ note, onClick }) => {
-  // Show note.content for notes, note.code for snippets
+ 
   const excerpt = note?.content || note?.code || "No content yet...";
   return (
     <div
