@@ -1,12 +1,44 @@
-# React + Vite
+# 📒 Knotebook  
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Knotebook is a simple and efficient **note-taking and snippets management app**. It allows users to create, organize, and search through notes and snippets with ease. The project is designed with a clean UI and smooth user experience in mind.  
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features  
+- 📝 **Add Notes & Snippets** – Create and save your personal notes or code snippets.  
+- 📂 **Sidebar Navigation** – Easily switch between different notes and snippets.  
+- 🔍 **Search Functionality** – Quickly find any note or snippet from the home page.  
+- 📱 **Responsive Design** – Works across desktop, tablet, and mobile devices.  
+- ⚡ **Fast & Lightweight** – Simple yet powerful design for productivity.  
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Tech Stack  
+- **Frontend:** React.js  
+- **Styling:**  CSS  
+- **Database (optional):** Dexie.js  
+- **Deployment:** Vercel 
+
+---
+
+## ⚙️ How to Run Locally  
+
+Follow these steps to run the project on your local machine:  
+
+1. **Clone the repository**  
+   ```bash
+   git clone https://github.com/ammadbaryar/knotebook.git
+   cd Knotebook
+
+2. **Install Dependencies**  
+   ```bash
+   npm install
+   npm install @codemirror/lang-markdown @uiw/react-codemirror @xyflow/react dexie lunr react react-dom react-router-dom remark remark-gfm remark-html remark-parse
+   
+3. **Start the Devlopment Server**  
+   ```bash
+   npm start
+   
+4. **Build for Production**  
+   ```bash
+   npm run build
